@@ -17,6 +17,6 @@ Interested in our API? Check out our [documentation](https://api.liquiditick.com
 
 ## 📧 Contact
 - Website: [liquiditick.com](https://liquiditick.com)
-- Email: partnerships@liquiditick.com
+- Email: contact@liquiditick.com
 - Twitter: [@liquiditick](https://twitter.com/liquiditick)
 
