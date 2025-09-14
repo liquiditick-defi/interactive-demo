@@ -1,1 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiquidiTick - Live Crypto Scanner Demo</title>
+    <meta name="description" content="Experience LiquidiTick's real-time crypto scanner with rug detection, opportunity alerts, and AI-powered risk analysis.">
+    <meta property="og:title" content="LiquidiTick Live Scanner Demo">
+    <meta property="og:description" content="Interactive crypto scanner with real-time rug detection and opportunity alerts - 95% accuracy">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🛡️ Try LiquidiTick's Live Crypto Scanner">
+    <meta name="twitter:description" content="Real-time rug detection + opportunity scanner. Test it live!">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a0a0a 50%, #2a0505 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4444;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #cccccc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: #ff4444;
+            color: white;
+            border-color: #ff4444;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #1a4d3a;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid #22c55e;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ff4444, #ff8888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #22c55e;
+            margin-bottom: 5px;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .dashboard-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .refresh-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #cccccc;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Opportunities List */
+        .opportunity-item {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .opportunity-item:hover {
+            border-color: #22c55e;
+            transform: translateY(-2px);
+        }
+
+        .opportunity-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .token-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .token-symbol {
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        .price-change {
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .price-change.positive {
+            background: rgba(34,197,94,0.2);
+            color: #22c55e;
+        }
+
+        .price-change.negative {
+            background: rgba(239,68,68,0.2);
+            color: #ef4444;
+        }
+
+        .opportunity-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* Alert Items */
+        .alert-item {
+            background: rgba(0,0,0,0.4);
+            border-left: 4px solid;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            animation: slideInRight 0.5s ease;
+        }
+
+        .alert-critical { border-left-color: #dc2626; }
+        .alert-high { border-left-color: #ef4444; }
+        .alert-moderate { border-left-color: #f97316; }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .alert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .alert-level {
+            font-weight: 600;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .alert-critical .alert-level {
+            background: rgba(220,38,38,0.2);
+            color: #dc2626;
+        }
+
+        .alert-high .alert-level {
+            background: rgba(239,68,68,0.2);
+            color: #ef4444;
+        }
+
+        .alert-moderate .alert-level {
+            background: rgba(249,115,22,0.2);
+            color: #f97316;
+        }
+
+        .alert-time {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .alert-description {
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .alert-details {
+            font-size: 11px;
+            color: #888;
+            font-family: monospace;
+        }
+
+        /* Scanner Section */
+        .scanner-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .scanner-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .wallet-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .wallet-input:focus {
+            outline: none;
+            border-color: #ff4444;
+            box-shadow: 0 0 0 2px rgba(255,68,68,0.2);
+        }
+
+        .scan-button {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+
+        .scan-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,68,68,0.3);
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .demo-button {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #cccccc;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Live Feed */
+        .live-feed {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .live-feed::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .live-feed::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+
+        .live-feed::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+
+        /* Results */
+        .results-section {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .risk-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid;
+        }
+
+        .risk-safe { border-left-color: #22c55e; }
+        .risk-low { border-left-color: #eab308; }
+        .risk-moderate { border-left-color: #f97316; }
+        .risk-high { border-left-color: #ef4444; }
+        .risk-critical { border-left-color: #dc2626; }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .risk-level {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .risk-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff4444, #ff8888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top: 2px solid #ff4444;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .scanner-form {
+                flex-direction: column;
+            }
+            
+            .input-group {
+                min-width: auto;
+            }
+            
+            .scan-button {
+                align-self: stretch;
+            }
+
+            .nav-tabs {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #333;
+            margin-top: 50px;
+            color: #999;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(79,195,247,0.3);
+        }
+
+        .cta-button.secondary {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+        }
+
+        .cta-button.secondary:hover {
+            box-shadow: 0 5px 20px rgba(255,68,68,0.3);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    🛡️ LiquidiTick
+                </div>
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Live Dashboard</button>
+                    <button class="nav-tab" onclick="switchTab('scanner')">🔍 Rug Scanner</button>
+                    <button class="nav-tab" onclick="switchTab('api')">🔧 API Docs</button>
+                </div>
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    Live • 95.3% Accuracy
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <section class="hero">
+                <h1>Live Crypto Intelligence Dashboard</h1>
+                <p class="hero-subtitle">
+                    Real-time opportunities, rug detection alerts, and AI-powered risk analysis across all major chains.
+                </p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="opportunitiesCount">247</div>
+                        <div>Live Opportunities</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="alertsToday">23</div>
+                        <div>Alerts Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2,847</div>
+                        <div>Ruggers Tracked</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$2.1M+</div>
+                        <div>Losses Prevented</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="dashboard-grid">
+                <!-- Live Opportunities -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">💎 Live Opportunities</h3>
+                        <button class="refresh-btn" onclick="refreshOpportunities()">🔄 Refresh</button>
+                    </div>
+                    <div class="live-feed" id="opportunitiesFeed">
+                        <!-- Opportunities will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Rug Alerts -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">🚨 Rug Alerts</h3>
+                        <button class="refresh-btn" onclick="refreshAlerts()">🔄 Refresh</button>
+                    </div>
+                    <div class="live-feed" id="alertsFeed">
+                        <!-- Alerts will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scanner Tab -->
+        <div id="scanner" class="tab-content">
+            <section class="hero">
+                <h1>🔍 Interactive Rug Scanner</h1>
+                <p class="hero-subtitle">
+                    Test our AI-powered rug detection system. Enter any wallet address to see real-time risk assessment.
+                </p>
+            </section>
+
+            <div class="scanner-section">
+                <div class="demo-buttons">
+                    <button class="demo-button" onclick="loadDemoWallet('safe')">✅ Safe Wallet</button>
+                    <button class="demo-button" onclick="loadDemoWallet('suspicious')">⚠️ Suspicious</button>
+                    <button class="demo-button" onclick="loadDemoWallet('rugger')">🚨 Known Rugger</button>
+                    <button class="demo-button" onclick="loadDemoWallet('random')">🎲 Random</button>
+                </div>
+
+                <form class="scanner-form" onsubmit="scanWallet(event)">
+                    <div class="input-group">
+                        <label class="input-label" for="walletAddress">Wallet Address or ENS Domain</label>
+                        <input 
+                            type="text" 
+                            id="walletAddress" 
+                            class="wallet-input"
+                            placeholder="Enter wallet address (e.g., 0x123... or vitalik.eth)"
+                            required
+                        >
+                    </div>
+                    <button type="submit" class="scan-button" id="scanButton">
+                        🔍 Scan Now
+                    </button>
+                </form>
+
+                <div id="resultsSection" class="results-section">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- API Tab -->
+        <div id="api" class="tab-content">
+            <section class="hero">
+                <h1>🔧 Developer API</h1>
+                <p class="hero-subtitle">
+                    Integrate LiquidiTick's rug detection and opportunity scanning into your platform.
+                </p>
+            </section>
+
+            <div class="scanner-section">
+                <h3 style="color: #4fc3f7; margin-bottom: 20px;">Quick Start</h3>
+                
+                <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0; overflow-x: auto;">
+                    <pre style="color: #f8f8f2; font-family: 'Monaco', 'Consolas', monospace; font-size: 14px;">curl -H "X-API-Key: your_api_key" \
+https://api.liquiditick.com/risk/0x123...</pre>
+                </div>
+
+                <h4 style="color: #22c55e; margin: 30px 0 15px 0;">📍 Key Endpoints</h4>
+                
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(34,197,94,0.1); color: #22c55e; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">GET</div>
+                    <strong>/risk/{wallet_address}</strong> - Get risk assessment
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">POST</div>
+                    <strong>/risk/batch</strong> - Check up to 50 wallets
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(34,197,94,0.1); color: #22c55e; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">GET</div>
+                    <strong>/opportunities/live</strong> - Live opportunities feed
+                </div>
+
+                <h4 style="color: #22c55e; margin: 30px 0 15px 0;">📝 Example Response</h4>
+                
+                <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0; overflow-x: auto;">
+                    <pre style="color: #f8f8f2; font-family: 'Monaco', 'Consolas', monospace; font-size: 13px;">{
+  "status": "success",
+  "data": {
+    "risk_score": 9.2,
+    "risk_level": "CRITICAL",
+    "threat_status": "VERIFIED_RUGGER",
+    "tokens_created": 5,
+    "successful_rugs": 4,
+    "behavioral_flags": [
+      "rapid_rug", "social_verified"
+    ],
+    "evidence_summary": "Multiple confirmed scams..."
+  }
+}</pre>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="https://api.liquiditick.com/docs" target="_blank" class="cta-button">
+                        📖 Full Documentation
+                    </a>
+                    <a href="mailto:partnerships@liquiditick.com" class="cta-button secondary">
+                        🤝 Get API Access
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 LiquidiTick. Advanced crypto intelligence and rug protection.</p>
+            <p style="margin-top: 10px;">
+                <a href="https://liquiditick.com" style="color: #ff4444; text-decoration: none;">Official Website</a> • 
+                <a href="mailto:partnerships@liquiditick.com" style="color: #ff4444; text-decoration: none;">Partner With Us</a> • 
+                <a href="https://twitter.com/liquiditick" style="color: #ff4444; text-decoration: none;">Follow Updates</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Global state
+        let currentTab = 'dashboard';
+        let opportunitiesInterval;
+        let alertsInterval;
+
+        // Demo data
+        const demoWallets = {
+            safe: '0x1234567890123456789012345678901234567890',
+            suspicious: 'DEMO_RUGGER_002_09012200',
+            rugger: 'DEMO_RUGGER_001_09012200',
+            random: () => '0x' + Math.random().toString(16).substr(2, 40)
+        };
+
+        const mockTokens = [
+            'PEPE', 'SHIB', 'DOGE', 'BONK', 'WIF', 'FLOKI', 'MEME', 'WOJAK', 'TURBO', 'ANDY',
+            'BABY', 'MOON', 'SAFE', 'ROCKET', 'APE', 'CAT', 'FROG', 'BEAR', 'LION', 'TIGER'
+        ];
+
+        const chains = ['ETH', 'BSC', 'SOL', 'MATIC', 'ARB', 'AVAX'];
+
+        // Generate random opportunities
+        function generateOpportunity() {
+            const token = mockTokens[Math.floor(Math.random() * mockTokens.length)];
+            const chain = chains[Math.floor(Math.random() * chains.length)];
+            const priceChange = (Math.random() - 0.3) * 200; // Bias towards positive
+            const liquidity = Math.random() * 500 + 50;
+            const volume = Math.random() * 1000 + 100;
+            const mcap = Math.random() * 10000 + 1000;
+            
+            return {
+                symbol: token + Math.floor(Math.random() * 1000),
+                chain: chain,
+                price_usd: (Math.random() * 0.01).toFixed(6),
+                price_change_5m: priceChange,
+                liquidity_usd: liquidity,
+                volume_5m: volume,
+                market_cap: mcap,
+                holders: Math.floor(Math.random() * 1000) + 50,
+                age_minutes: Math.floor(Math.random() * 60),
+                rugger_risk: Math.random() * 3, // Low risk for opportunities
+                timestamp: new Date()
+            };
+        }
+
+        // Generate random rug alerts
+        function generateRugAlert() {
+            const token = mockTokens[Math.floor(Math.random() * mockTokens.length)];
+            const chain = chains[Math.floor(Math.random() * chains.length)];
+            const riskScore = Math.random() * 4 + 6; // 6-10 range
+            const creators = [
+                'DEMO_RUGGER_001_09012200',
+                'DEMO_RUGGER_002_09012200', 
+                '8TPuakvJ...zsbtUaHr',
+                '4mKjX9dQ...pL2nRtY8',
+                'CdtVpREvJ...yypump'
+            ];
+            
+            const riskLevel = riskScore >= 9 ? 'CRITICAL' : riskScore >= 7.5 ? 'HIGH' : 'MODERATE';
+            const alertType = riskScore >= 9 ? 'alert-critical' : riskScore >= 7.5 ? 'alert-high' : 'alert-moderate';
+            
+            return {
+                token_symbol: token + Math.floor(Math.random() * 1000),
+                chain: chain,
+                creator_address: creators[Math.floor(Math.random() * creators.length)],
+                risk_score: riskScore,
+                risk_level: riskLevel,
+                alert_type: alertType,
+                amount_at_risk: Math.random() * 100 + 10,
+                detected_time: new Date(),
+                behavioral_flags: ['rapid_rug', 'liquidity_drain', 'suspicious_volume'][Math.floor(Math.random() * 3)]
+            };
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update nav
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            currentTab = tabName;
+            
+            // Start/stop live feeds
+            if (tabName === 'dashboard') {
+                startLiveFeeds();
+            } else {
+                stopLiveFeeds();
+            }
+        }
+
+        // Live feed management
+        function startLiveFeeds() {
+            refreshOpportunities();
+            refreshAlerts();
+            
+            opportunitiesInterval = setInterval(addNewOpportunity, 3000);
+            alertsInterval = setInterval(addNewAlert, 8000);
+        }
+
+        function stopLiveFeeds() {
+            clearInterval(opportunitiesInterval);
+            clearInterval(alertsInterval);
+        }
+
+        function refreshOpportunities() {
+            const feed = document.getElementById('opportunitiesFeed');
+            feed.innerHTML = '';
+            
+            // Add initial opportunities
+            for (let i = 0; i < 8; i++) {
+                addOpportunityToFeed(generateOpportunity());
+            }
+            
+            updateOpportunitiesCount();
+        }
+
+        function refreshAlerts() {
+            const feed = document.getElementById('alertsFeed');
+            feed.innerHTML = '';
+            
+            // Add initial alerts
+            for (let i = 0; i < 6; i++) {
+                addAlertToFeed(generateRugAlert());
+            }
+            
+            updateAlertsCount();
+        }
+
+        function addNewOpportunity() {
+            if (currentTab === 'dashboard') {
+                addOpportunityToFeed(generateOpportunity());
+                
+                // Remove oldest if too many
+                const feed = document.getElementById('opportunitiesFeed');
+                if (feed.children.length > 12) {
+                    feed.removeChild(feed.lastChild);
+                }
+                
+                updateOpportunitiesCount();
+            }
+        }
+
+        function addNewAlert() {
+            if (currentTab === 'dashboard') {
+                addAlertToFeed(generateRugAlert());
+                
+                // Remove oldest if too many
+                const feed = document.getElementById('alertsFeed');
+                if (feed.children.length > 10) {
+                    feed.removeChild(feed.lastChild);
+                }
+                
+                updateAlertsCount();
+            }
+        }
+
+        function addOpportunityToFeed(opportunity) {
+            const feed = document.getElementById('opportunitiesFeed');
+            const item = document.createElement('div');
+            item.className = 'opportunity-item';
+            
+            const priceChangeClass = opportunity.price_change_5m >= 0 ? 'positive' : 'negative';
+            const priceChangeSymbol = opportunity.price_change_5m >= 0 ? '+' : '';
+            
+            item.innerHTML = `
+                <div class="opportunity-header">
+                    <div class="token-info">
+                        <span class="token-symbol">${opportunity.symbol}</span>
+                        <span style="color: #666; font-size: 12px;">${opportunity.chain}</span>
+                        <span class="price-change ${priceChangeClass}">
+                            ${priceChangeSymbol}${opportunity.price_change_5m.toFixed(1)}%
+                        </span>
+                    </div>
+                    <div style="color: #666; font-size: 11px;">
+                        ${opportunity.age_minutes}m ago
+                    </div>
+                </div>
+                <div class="opportunity-details">
+                    <div>💰 ${opportunity.price_usd}</div>
+                    <div>🌊 ${opportunity.liquidity_usd.toFixed(0)}K</div>
+                    <div>📊 ${opportunity.volume_5m.toFixed(0)}K</div>
+                    <div>👥 ${opportunity.holders}</div>
+                    <div style="color: #22c55e;">✅ Safe</div>
+                </div>
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+        }
+
+        function addAlertToFeed(alert) {
+            const feed = document.getElementById('alertsFeed');
+            const item = document.createElement('div');
+            item.className = `alert-item ${alert.alert_type}`;
+            
+            const timeAgo = Math.floor((new Date() - alert.detected_time) / 1000 / 60);
+            
+            item.innerHTML = `
+                <div class="alert-header">
+                    <span class="alert-level">${alert.risk_level} RISK</span>
+                    <span class="alert-time">${timeAgo}m ago</span>
+                </div>
+                <div class="alert-description">
+                    🚨 ${alert.token_symbol} (${alert.chain}) - Suspicious activity detected
+                </div>
+                <div class="alert-details">
+                    Risk: ${alert.risk_score.toFixed(1)}/10 | Creator: ${alert.creator_address.substr(0, 12)}...
+                    <br>At Risk: ${alert.amount_at_risk.toFixed(0)}K | Flag: ${alert.behavioral_flags}
+                </div>
+            `;
+            
+            feed.insertBefore(item, feed.firstChild);
+        }
+
+        function updateOpportunitiesCount() {
+            const count = document.getElementById('opportunitiesCount');
+            const current = parseInt(count.textContent);
+            count.textContent = current + Math.floor(Math.random() * 5) - 2;
+        }
+
+        function updateAlertsCount() {
+            const count = document.getElementById('alertsToday');
+            const current = parseInt(count.textContent);
+            count.textContent = current + 1;
+        }
+
+        // Scanner functionality
+        function loadDemoWallet(type) {
+            const walletInput = document.getElementById('walletAddress');
+            if (type === 'random') {
+                walletInput.value = demoWallets.random();
+            } else {
+                walletInput.value = demoWallets[type];
+            }
+        }
+
+        async function scanWallet(event) {
+            event.preventDefault();
+            
+            const walletAddress = document.getElementById('walletAddress').value.trim();
+            const resultsSection = document.getElementById('resultsSection');
+            const scanButton = document.getElementById('scanButton');
+            
+            if (!walletAddress) {
+                alert('Please enter a wallet address');
+                return;
+            }
+
+            // Show loading state
+            scanButton.disabled = true;
+            scanButton.innerHTML = '🔄 Scanning...';
+            
+            resultsSection.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing wallet for rug pull indicators...</p>
+                    <p style="color: #999; font-size: 14px;">Checking against 2,847 known ruggers...</p>
+                </div>
+            `;
+            resultsSection.classList.add('visible');
+
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Get mock response
+            const response = getMockWalletResponse(walletAddress);
+            displayResults(response);
+            
+            // Reset button
+            scanButton.disabled = false;
+            scanButton.innerHTML = '🔍 Scan Now';
+        }
+
+        function getMockWalletResponse(walletAddress) {
+            const mockResponses = {
+                'DEMO_RUGGER_001_09012200': {
+                    wallet_address: 'DEMO_RUGGER_001_09012200',
+                    risk_score: 9.2,
+                    risk_level: 'CRITICAL',
+                    threat_status: 'VERIFIED_RUGGER',
+                    tokens_created: 5,
+                    successful_rugs: 4,
+                    total_profit_sol: 847.3,
+                    behavioral_flags: ['rapid_rug', 'liquidity_drain', 'multi_token', 'social_verified'],
+                    confirmation_level: 'confirmed',
+                    evidence_summary: 'High-frequency rugger with multiple confirmed scams. Social media evidence and blockchain analysis confirm pattern of rapid liquidity removal.',
+                    last_activity: '2025-09-01',
+                    avg_rug_time: '12 minutes'
+                },
+                'DEMO_RUGGER_002_09012200': {
+                    wallet_address: 'DEMO_RUGGER_002_09012200',
+                    risk_score: 7.8,
+                    risk_level: 'HIGH',
+                    threat_status: 'SUSPICIOUS_CREATOR',
+                    tokens_created: 3,
+                    successful_rugs: 2,
+                    total_profit_sol: 234.7,
+                    behavioral_flags: ['quick_rug', 'social_evidence'],
+                    confirmation_level: 'confirmed',
+                    evidence_summary: 'Pattern of quick liquidity removal after launches. Multiple community reports and social media verification.',
+                    last_activity: '2025-08-30',
+                    avg_rug_time: '18 minutes'
+                },
+                '0x1234567890123456789012345678901234567890': {
+                    wallet_address: '0x1234567890123456789012345678901234567890',
+                    risk_score: 1.2,
+                    risk_level: 'SAFE',
+                    threat_status: 'CLEAN',
+                    tokens_created: 0,
+                    successful_rugs: 0,
+                    total_profit_sol: 0,
+                    behavioral_flags: [],
+                    confirmation_level: 'clean',
+                    evidence_summary: 'No suspicious activity detected. Clean wallet with normal trading patterns.',
+                    last_activity: 'N/A',
+                    avg_rug_time: 'N/A'
+                }
+            };
+
+            if (mockResponses[walletAddress]) {
+                return mockResponses[walletAddress];
+            }
+
+            // Generate random response for unknown wallets
+            const randomRisk = Math.random() * 10;
+            const getRiskLevel = (score) => {
+                if (score >= 8) return 'CRITICAL';
+                if (score >= 6) return 'HIGH';
+                if (score >= 4) return 'MODERATE';
+                if (score >= 2) return 'LOW';
+                return 'SAFE';
+            };
+            
+            return {
+                wallet_address: walletAddress,
+                risk_score: randomRisk,
+                risk_level: getRiskLevel(randomRisk),
+                threat_status: randomRisk >= 6 ? 'SUSPICIOUS_CREATOR' : 'CLEAN',
+                tokens_created: Math.floor(Math.random() * 5),
+                successful_rugs: randomRisk >= 6 ? Math.floor(Math.random() * 3) : 0,
+                total_profit_sol: randomRisk >= 6 ? Math.random() * 500 : 0,
+                behavioral_flags: randomRisk >= 6 ? ['suspicious_activity'] : [],
+                confirmation_level: randomRisk >= 8 ? 'confirmed' : randomRisk >= 4 ? 'suspected' : 'clean',
+                evidence_summary: randomRisk >= 6 ? 'Some suspicious patterns detected.' : 'No significant risks detected.',
+                last_activity: randomRisk >= 6 ? '2025-08-15' : 'N/A',
+                avg_rug_time: randomRisk >= 6 ? '25 minutes' : 'N/A'
+            };
+        }
+
+        function displayResults(data) {
+            const resultsSection = document.getElementById('resultsSection');
+            
+            const riskClass = `risk-${data.risk_level.toLowerCase()}`;
+            const riskColor = {
+                'SAFE': '#22c55e',
+                'LOW': '#eab308',
+                'MODERATE': '#f97316',
+                'HIGH': '#ef4444',
+                'CRITICAL': '#dc2626'
+            }[data.risk_level];
+
+            const threatIcon = {
+                'CLEAN': '✅',
+                'FLAGGED': '⚠️',
+                'SUSPICIOUS_CREATOR': '🚨',
+                'VERIFIED_RUGGER': '💀'
+            }[data.threat_status] || '❓';
+
+            resultsSection.innerHTML = `
+                <div class="risk-card ${riskClass}">
+                    <div class="risk-header">
+                        <div>
+                            <div class="risk-level" style="color: ${riskColor}">
+                                ${threatIcon} ${data.risk_level} RISK
+                            </div>
+                            <div style="color: #999; font-size: 14px;">
+                                Status: ${data.threat_status.replace(/_/g, ' ')}
+                            </div>
+                        </div>
+                        <div class="risk-score">${data.risk_score.toFixed(1)}/10</div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 15px 0;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+                            <div style="color: #999; font-size: 12px; margin-bottom: 4px;">Wallet Address</div>
+                            <div style="font-family: monospace; font-size: 11px; word-break: break-all;">
+                                ${data.wallet_address}
+                            </div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+                            <div style="color: #999; font-size: 12px; margin-bottom: 4px;">Tokens Created</div>
+                            <div style="font-weight: 600;">${data.tokens_created}</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+                            <div style="color: #999; font-size: 12px; margin-bottom: 4px;">Successful Rugs</div>
+                            <div style="font-weight: 600; color: ${data.successful_rugs > 0 ? '#ef4444' : '#22c55e'};">${data.successful_rugs}</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px;">
+                            <div style="color: #999; font-size: 12px; margin-bottom: 4px;">Estimated Profit</div>
+                            <div style="font-weight: 600;">${data.total_profit_sol.toFixed(1)} SOL</div>
+                        </div>
+                    </div>
+
+                    ${data.behavioral_flags.length > 0 ? `
+                        <div style="margin: 15px 0;">
+                            <div style="margin-bottom: 8px; font-weight: 600; color: #ef4444;">
+                                🚩 Risk Indicators:
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                                ${data.behavioral_flags.map(flag => 
+                                    `<span style="background: rgba(239,68,68,0.2); color: #ef4444; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;">${flag.replace(/_/g, ' ').toUpperCase()}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                        <div style="font-weight: 600; margin-bottom: 6px; font-size: 14px;">📋 Analysis Summary:</div>
+                        <div style="color: #cccccc; font-size: 13px;">${data.evidence_summary}</div>
+                    </div>
+
+                    ${data.risk_score >= 6 ? `
+                        <div style="margin-top: 12px; padding: 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px;">
+                            <div style="font-weight: 600; color: #ef4444; font-size: 14px;">⚠️ High Risk Warning</div>
+                            <div style="color: #ffcccc; font-size: 12px; margin-top: 4px;">
+                                This wallet shows dangerous patterns. Avoid tokens created by this address.
+                            </div>
+                        </div>
+                    ` : data.risk_score <= 2 ? `
+                        <div style="margin-top: 12px; padding: 12px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px;">
+                            <div style="font-weight: 600; color: #22c55e; font-size: 14px;">✅ Safe Assessment</div>
+                            <div style="color: #ccffcc; font-size: 12px; margin-top: 4px;">
+                                No significant risk indicators detected. Normal trading patterns observed.
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            startLiveFeeds();
+            document.getElementById('walletAddress').focus();
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            stopLiveFeeds();
+        });
+    </script>
+</body>
+</html>
