@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiquidiTick - Live Crypto Scanner Demo</title>
-    <meta name="description" content="Experience LiquidiTick's real-time crypto scanner with rug detection, opportunity alerts, and AI-powered risk analysis.">
-    <meta property="og:title" content="LiquidiTick Live Scanner Demo">
-    <meta property="og:description" content="Interactive crypto scanner with real-time rug detection and opportunity alerts - 95% accuracy">
+    <title>LiquidiTick - Interactive Demo | Crypto Rug Detection Scanner</title>
+    <meta name="description" content="Experience LiquidiTick's AI-powered rug detection scanner with real-time alerts and risk analysis. Demo with simulated data.">
+    <meta property="og:title" content="LiquidiTick Interactive Demo - Crypto Rug Scanner">
+    <meta property="og:description" content="Interactive demo showcasing AI-powered rug detection with 95% accuracy. Test wallet addresses and see real-time risk analysis.">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="🛡️ Try LiquidiTick's Live Crypto Scanner">
-    <meta name="twitter:description" content="Real-time rug detection + opportunity scanner. Test it live!">
+    <meta name="twitter:title" content="🛡️ Try LiquidiTick's Crypto Rug Scanner Demo">
+    <meta name="twitter:description" content="Interactive demo with real-time rug detection and opportunity alerts - simulated data for testing">
     
     <style>
         * {
@@ -33,6 +33,33 @@
             padding: 0 20px;
         }
 
+        /* Demo Banner */
+        .demo-banner {
+            background: linear-gradient(45deg, #1e40af, #3b82f6);
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid #444;
+            position: sticky;
+            top: 0;
+            z-index: 101;
+        }
+
+        .demo-banner p {
+            margin: 0;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .demo-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
         /* Header */
         .header {
             padding: 15px 0;
@@ -40,7 +67,7 @@
             background: rgba(0,0,0,0.3);
             backdrop-filter: blur(10px);
             position: sticky;
-            top: 0;
+            top: 58px;
             z-index: 100;
         }
 
@@ -141,9 +168,20 @@
             font-size: 1.1rem;
             color: #cccccc;
             margin-bottom: 30px;
-            max-width: 600px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .demo-notice {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 20px auto;
+            max-width: 600px;
+            font-size: 14px;
+            color: #93c5fd;
         }
 
         .stats-grid {
@@ -517,39 +555,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .scanner-form {
-                flex-direction: column;
-            }
-            
-            .input-group {
-                min-width: auto;
-            }
-            
-            .scan-button {
-                align-self: stretch;
-            }
-
-            .nav-tabs {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        .footer {
-            text-align: center;
-            padding: 30px 0;
-            border-top: 1px solid #333;
-            margin-top: 50px;
-            color: #999;
-        }
-
+        /* CTA Buttons */
         .cta-buttons {
             display: flex;
             gap: 15px;
@@ -581,9 +587,68 @@
         .cta-button.secondary:hover {
             box-shadow: 0 5px 20px rgba(255,68,68,0.3);
         }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #333;
+            margin-top: 50px;
+            color: #999;
+        }
+
+        .disclaimer {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 12px;
+            color: #93c5fd;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .scanner-form {
+                flex-direction: column;
+            }
+            
+            .input-group {
+                min-width: auto;
+            }
+            
+            .scan-button {
+                align-self: stretch;
+            }
+
+            .nav-tabs {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .demo-banner p {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Demo Disclaimer Banner -->
+    <div class="demo-banner">
+        <div class="container">
+            <p>
+                <span class="demo-tag">DEMO MODE</span>
+                All data is simulated for demonstration purposes • Not real trading advice • Test functionality only
+            </p>
+        </div>
+    </div>
+
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -597,7 +662,7 @@
                 </div>
                 <div class="status-badge">
                     <div class="status-dot"></div>
-                    Live • 95.3% Accuracy
+                    Demo • 95.3% Accuracy
                 </div>
             </div>
         </div>
@@ -609,17 +674,20 @@
             <section class="hero">
                 <h1>Live Crypto Intelligence Dashboard</h1>
                 <p class="hero-subtitle">
-                    Real-time opportunities, rug detection alerts, and AI-powered risk analysis across all major chains.
+                    Interactive demo showcasing real-time rug detection, opportunity alerts, and AI-powered risk analysis across all major chains.
                 </p>
+                <div class="demo-notice">
+                    🎮 <strong>Interactive Demo:</strong> Experience our platform with simulated data. All feeds, alerts, and scanner results are for demonstration purposes only.
+                </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="opportunitiesCount">247</div>
-                        <div>Live Opportunities</div>
+                        <div>Live Opportunities*</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number" id="alertsToday">23</div>
-                        <div>Alerts Today</div>
+                        <div>Alerts Today*</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">2,847</div>
@@ -636,7 +704,7 @@
                 <!-- Live Opportunities -->
                 <div class="dashboard-card">
                     <div class="card-header">
-                        <h3 class="card-title">💎 Live Opportunities</h3>
+                        <h3 class="card-title">💎 Live Opportunities*</h3>
                         <button class="refresh-btn" onclick="refreshOpportunities()">🔄 Refresh</button>
                     </div>
                     <div class="live-feed" id="opportunitiesFeed">
@@ -647,7 +715,7 @@
                 <!-- Rug Alerts -->
                 <div class="dashboard-card">
                     <div class="card-header">
-                        <h3 class="card-title">🚨 Rug Alerts</h3>
+                        <h3 class="card-title">🚨 Rug Alerts*</h3>
                         <button class="refresh-btn" onclick="refreshAlerts()">🔄 Refresh</button>
                     </div>
                     <div class="live-feed" id="alertsFeed">
@@ -662,8 +730,11 @@
             <section class="hero">
                 <h1>🔍 Interactive Rug Scanner</h1>
                 <p class="hero-subtitle">
-                    Test our AI-powered rug detection system. Enter any wallet address to see real-time risk assessment.
+                    Test our AI-powered rug detection system with simulated results. Enter any wallet address to see how our risk assessment works.
                 </p>
+                <div class="demo-notice">
+                    ⚠️ <strong>Demo Scanner:</strong> Results are simulated for demonstration. Real scanner analyzes actual blockchain data and behavioral patterns.
+                </div>
             </section>
 
             <div class="scanner-section">
@@ -701,8 +772,11 @@
             <section class="hero">
                 <h1>🔧 Developer API</h1>
                 <p class="hero-subtitle">
-                    Integrate LiquidiTick's rug detection and opportunity scanning into your platform.
+                    Integrate LiquidiTick's rug detection and opportunity scanning into your platform with our comprehensive API.
                 </p>
+                <div class="demo-notice">
+                    📚 <strong>API Documentation:</strong> Real endpoints and authentication required for production use. Contact us for API access.
+                </div>
             </section>
 
             <div class="scanner-section">
@@ -717,17 +791,22 @@ https://api.liquiditick.com/risk/0x123...</pre>
                 
                 <div style="margin: 20px 0;">
                     <div style="background: rgba(34,197,94,0.1); color: #22c55e; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">GET</div>
-                    <strong>/risk/{wallet_address}</strong> - Get risk assessment
+                    <strong>/risk/{wallet_address}</strong> - Get comprehensive risk assessment
                 </div>
 
                 <div style="margin: 20px 0;">
                     <div style="background: rgba(59,130,246,0.1); color: #3b82f6; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">POST</div>
-                    <strong>/risk/batch</strong> - Check up to 50 wallets
+                    <strong>/risk/batch</strong> - Check up to 50 wallets simultaneously
                 </div>
 
                 <div style="margin: 20px 0;">
                     <div style="background: rgba(34,197,94,0.1); color: #22c55e; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">GET</div>
-                    <strong>/opportunities/live</strong> - Live opportunities feed
+                    <strong>/opportunities/live</strong> - Real-time opportunities feed
+                </div>
+
+                <div style="margin: 20px 0;">
+                    <div style="background: rgba(34,197,94,0.1); color: #22c55e; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; display: inline-block; margin-right: 10px;">GET</div>
+                    <strong>/stats</strong> - Database statistics and health metrics
                 </div>
 
                 <h4 style="color: #22c55e; margin: 30px 0 15px 0;">📝 Example Response</h4>
@@ -736,6 +815,7 @@ https://api.liquiditick.com/risk/0x123...</pre>
                     <pre style="color: #f8f8f2; font-family: 'Monaco', 'Consolas', monospace; font-size: 13px;">{
   "status": "success",
   "data": {
+    "wallet_address": "0x123...",
     "risk_score": 9.2,
     "risk_level": "CRITICAL",
     "threat_status": "VERIFIED_RUGGER",
@@ -744,9 +824,25 @@ https://api.liquiditick.com/risk/0x123...</pre>
     "behavioral_flags": [
       "rapid_rug", "social_verified"
     ],
-    "evidence_summary": "Multiple confirmed scams..."
+    "evidence_summary": "Multiple confirmed scams...",
+    "last_activity": "2025-09-01"
+  },
+  "api_info": {
+    "client": "Demo Client",
+    "tier": "premium"
   }
 }</pre>
+                </div>
+
+                <h4 style="color: #22c55e; margin: 30px 0 15px 0;">🔑 Authentication</h4>
+                <p style="color: #ccc; margin-bottom: 15px;">Include your API key in requests:</p>
+                
+                <div style="background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 20px; margin: 20px 0; overflow-x: auto;">
+                    <pre style="color: #f8f8f2; font-family: 'Monaco', 'Consolas', monospace; font-size: 13px;">// Header authentication
+X-API-Key: your_api_key_here
+
+// Query parameter authentication  
+?api_key=your_api_key_here</pre>
                 </div>
 
                 <div class="cta-buttons">
@@ -763,11 +859,19 @@ https://api.liquiditick.com/risk/0x123...</pre>
 
     <footer class="footer">
         <div class="container">
+            <div class="disclaimer">
+                ⚠️ <strong>Demo Disclaimer:</strong> This is an interactive demonstration using simulated data to showcase platform functionality. 
+                All opportunities, alerts, and scanner results are for testing purposes only. Not financial advice. Always do your own research.
+            </div>
+            
             <p>&copy; 2024 LiquidiTick. Advanced crypto intelligence and rug protection.</p>
             <p style="margin-top: 10px;">
                 <a href="https://liquiditick.com" style="color: #ff4444; text-decoration: none;">Official Website</a> • 
                 <a href="mailto:partnerships@liquiditick.com" style="color: #ff4444; text-decoration: none;">Partner With Us</a> • 
                 <a href="https://twitter.com/liquiditick" style="color: #ff4444; text-decoration: none;">Follow Updates</a>
+            </p>
+            <p style="margin-top: 15px; color: #666; font-size: 12px;">
+                *Simulated data for demonstration • Real platform uses live blockchain data
             </p>
         </div>
     </footer>
@@ -1181,7 +1285,7 @@ https://api.liquiditick.com/risk/0x123...</pre>
                     ${data.behavioral_flags.length > 0 ? `
                         <div style="margin: 15px 0;">
                             <div style="margin-bottom: 8px; font-weight: 600; color: #ef4444;">
-                                🚩 Risk Indicators:
+                                🚩 Risk Indicators (Demo):
                             </div>
                             <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                 ${data.behavioral_flags.map(flag => 
@@ -1192,25 +1296,29 @@ https://api.liquiditick.com/risk/0x123...</pre>
                     ` : ''}
 
                     <div style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px;">
-                        <div style="font-weight: 600; margin-bottom: 6px; font-size: 14px;">📋 Analysis Summary:</div>
+                        <div style="font-weight: 600; margin-bottom: 6px; font-size: 14px;">📋 Analysis Summary (Demo):</div>
                         <div style="color: #cccccc; font-size: 13px;">${data.evidence_summary}</div>
                     </div>
 
                     ${data.risk_score >= 6 ? `
                         <div style="margin-top: 12px; padding: 12px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px;">
-                            <div style="font-weight: 600; color: #ef4444; font-size: 14px;">⚠️ High Risk Warning</div>
+                            <div style="font-weight: 600; color: #ef4444; font-size: 14px;">⚠️ Demo High Risk Warning</div>
                             <div style="color: #ffcccc; font-size: 12px; margin-top: 4px;">
-                                This wallet shows dangerous patterns. Avoid tokens created by this address.
+                                This simulated result shows dangerous patterns. Real scanner would flag this wallet for manual review.
                             </div>
                         </div>
                     ` : data.risk_score <= 2 ? `
                         <div style="margin-top: 12px; padding: 12px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 8px;">
-                            <div style="font-weight: 600; color: #22c55e; font-size: 14px;">✅ Safe Assessment</div>
+                            <div style="font-weight: 600; color: #22c55e; font-size: 14px;">✅ Demo Safe Assessment</div>
                             <div style="color: #ccffcc; font-size: 12px; margin-top: 4px;">
-                                No significant risk indicators detected. Normal trading patterns observed.
+                                This simulated result shows no significant risk indicators. Real scanner would approve for normal trading.
                             </div>
                         </div>
                     ` : ''}
+                    
+                    <div style="margin-top: 12px; padding: 10px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); border-radius: 6px; font-size: 12px; color: #93c5fd;">
+                        💡 <strong>Demo Note:</strong> This is a simulated result. Real LiquidiTick scanner analyzes actual blockchain data, social media evidence, and behavioral patterns.
+                    </div>
                 </div>
             `;
         }
@@ -1218,13 +1326,32 @@ https://api.liquiditick.com/risk/0x123...</pre>
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             startLiveFeeds();
-            document.getElementById('walletAddress').focus();
+            
+            // Focus on scanner input if on scanner tab
+            if (document.getElementById('walletAddress')) {
+                document.getElementById('walletAddress').focus();
+            }
         });
 
         // Cleanup on page unload
         window.addEventListener('beforeunload', function() {
             stopLiveFeeds();
         });
+
+        // Feedback form functionality
+        function showFeedbackForm() {
+            const feedback = prompt(`💭 We'd love your feedback on LiquidiTick!\n\nWhat do you think about:\n• The rug detection concept?\n• The dashboard interface?\n• Features you'd want to see?\n\nYour thoughts:`);
+            
+            if (feedback && feedback.trim()) {
+                // Simple feedback collection (in real app, this would go to a backend)
+                alert(`🙏 Thank you for your feedback!\n\nWe'll use your input to improve LiquidiTick.\n\nFor more detailed discussions, email us at:\nfeedback@liquiditick.com`);
+                
+                // You could also mailto: with pre-filled feedback
+                const subject = encodeURIComponent('LiquidiTick Demo Feedback');
+                const body = encodeURIComponent(`Demo Feedback:\n\n${feedback}\n\n---\nSubmitted via interactive demo`);
+                window.open(`mailto:feedback@liquiditick.com?subject=${subject}&body=${body}`);
+            }
+        }
     </script>
 </body>
 </html>
